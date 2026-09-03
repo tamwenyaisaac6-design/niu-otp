@@ -28,6 +28,8 @@ npm start
 
 Set `MINI_APP_URL` to the HTTPS URL where the built `dist-miniapp` directory is hosted. Telegram Web Apps require HTTPS in production. The bot's Reply Keyboard web-app buttons keep the outlined keyboard appearance while opening the matching Mini App screen.
 
+To diagnose a deployment without exposing secrets, open `/api/status` on the Vercel domain. It reports which environment variable names are present and the Telegram webhook status.
+
 ## Vercel Telegram webhook
 
 Set `MINI_APP_URL=https://niu-otp-mocha.vercel.app/miniapp` in Vercel, then register the Telegram webhook once using the Bot API:
