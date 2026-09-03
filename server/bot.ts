@@ -214,6 +214,8 @@ export async function handleNowPaymentsWebhook(rawBody: string, signature: strin
   credit()
 }
 
+export { bot }
+
 bot.catch((error) => console.error('Telegram bot error:', error))
 const webhookServer = createServer((request, response) => {
   if (request.method === 'GET' && request.url === '/health') {
@@ -265,5 +267,7 @@ const webhookServer = createServer((request, response) => {
     }
   })
 })
-webhookServer.listen(Number(process.env.PORT ?? '3000'))
-await bot.start()
+if (process.env.VERCEL !== '1') {
+  webhookServer.listen(Number(process.env.PORT ?? '3000'))
+  await bot.start()
+}

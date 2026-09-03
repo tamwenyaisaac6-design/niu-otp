@@ -28,6 +28,16 @@ npm start
 
 Set `MINI_APP_URL` to the HTTPS URL where the built `dist-miniapp` directory is hosted. Telegram Web Apps require HTTPS in production. The bot's Reply Keyboard web-app buttons keep the outlined keyboard appearance while opening the matching Mini App screen.
 
+## Vercel Telegram webhook
+
+Set `MINI_APP_URL=https://niu-otp-mocha.vercel.app/miniapp` in Vercel, then register the Telegram webhook once using the Bot API:
+
+```text
+https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=https://niu-otp-mocha.vercel.app/api/telegram
+```
+
+The token belongs only in Vercel environment variables. Do not put it in `vercel.json`, source files, or the Mini App.
+
 ## Vercel NOWPayments webhook
 
 Deploy this project to Vercel, add `NOWPAYMENTS_IPN_SECRET`, `DATABASE_PATH`, and the other environment variables in the Vercel project settings, then configure NOWPayments to send IPN callbacks to:
