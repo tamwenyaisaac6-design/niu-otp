@@ -1,18 +1,16 @@
-# NI OTP Telegram Bot
+# NI OTP Web App
 
-Telegram bot and Telegram Mini App OTP marketplace. Primary navigation remains Telegram Reply Keyboard buttons; each button opens the Mini App on its corresponding screen.
+Standalone NI OTP web app for purchasing temporary verification numbers. Telegram is no longer required for the user interface.
 
 ## Setup
 
-Copy `.env.example` to `.env`, fill in the rotated credentials, and create environment variables before starting:
+Copy `.env.example` to `.env`, fill in the provider/payment credentials, and create environment variables before starting:
 
 ```env
-TELEGRAM_BOT_TOKEN=
 VIRTUALSMS_API_URL=
 VIRTUALSMS_API_KEY=
 NOWPAYMENTS_API_KEY=
 NOWPAYMENTS_IPN_SECRET=
-MINI_APP_URL=https://your-domain.example/miniapp
 PRICE_MULTIPLIER=2
 DATABASE_PATH=niu-otp.sqlite
 ```
@@ -23,22 +21,10 @@ Install and run:
 npm install
 npm run typecheck
 npm run build
-npm start
+npm run dev
 ```
 
-Set `MINI_APP_URL=https://niu-otp-mocha.vercel.app/miniapp`. Telegram Web Apps require HTTPS in production. The bot's Reply Keyboard web-app buttons keep the outlined keyboard appearance while opening the matching Mini App screen.
-
-To diagnose a deployment without exposing secrets, open `/api/status` on the Vercel domain. It reports which environment variable names are present and the Telegram webhook status.
-
-## Vercel Telegram webhook
-
-Set `MINI_APP_URL=https://niu-otp-mocha.vercel.app/miniapp` in Vercel, then register the Telegram webhook once using the Bot API:
-
-```text
-https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=https://niu-otp-mocha.vercel.app/api/telegram
-```
-
-The token belongs only in Vercel environment variables. Do not put it in `vercel.json`, source files, or the Mini App.
+Deploy to Vercel with `npm run build`. The app is served at the project root. Provider and payment credentials are server-side only.
 
 ## Vercel NOWPayments webhook
 
@@ -50,6 +36,4 @@ https://your-vercel-project.vercel.app/api/nowpayments
 
 The endpoint validates `x-nowpayments-sig`, credits only confirmed/finished payments, and ignores duplicate callbacks. Vercel uses temporary `/tmp` SQLite storage for this prototype; use a hosted database before production because serverless storage is not durable.
 
-The bot uses Reply Keyboard web-app buttons for primary navigation. The Mini App sends Telegram `initData` to the backend; the backend validates it with the bot token and never accepts a client-supplied Telegram ID, balance, or price. VirtualSMS credentials are only used by the server. Prices are fetched from the provider and recalculated server-side using `PRICE_MULTIPLIER`.
-
-`handleNowPaymentsWebhook` is exported for wiring into the HTTP webhook route used by the deployment. It validates the NOWPayments HMAC signature, ignores duplicate credits, and writes the deposit to the wallet transaction ledger.
+`handleNowPaymentsWebhook` validates the NOWPayments signature, ignores duplicate credits, and writes deposits to the wallet ledger.

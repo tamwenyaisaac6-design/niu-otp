@@ -2,18 +2,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist-miniapp",
   "functions": {
-    "api/telegram.ts": {
-      "maxDuration": 10
-    },
     "api/nowpayments.ts": {
       "maxDuration": 10
-    },
-    "api/status.ts": {
-      "maxDuration": 10
     }
-  },
-  "rewrites": [
-    { "source": "/miniapp", "destination": "/" },
-    { "source": "/miniapp/(.*)", "destination": "/$1" }
-  ]
+  }
 }

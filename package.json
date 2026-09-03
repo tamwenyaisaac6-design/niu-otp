@@ -4,25 +4,24 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch server/bot.ts",
-    "start": "tsx server/bot.ts",
+    "dev": "vite",
+    "start": "vite preview",
     "build": "tsc -b && vite build",
-    "lint": "oxlint server src api",
+    "lint": "oxlint src api",
     "typecheck": "tsc -p tsconfig.server.json --noEmit"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
     "dotenv": "^17.4.2",
-    "grammy": "^1.38.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",
-    "@vercel/node": "^5.5.25",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "@vercel/node": "^5.5.25",
     "@vitejs/plugin-react": "^6.1.0",
     "oxlint": "^1.79.0",
     "tsx": "^4.23.13",
