@@ -4,7 +4,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 export const config = { api: { bodyParser: false } }
 
-const db = new Database(process.env.DATABASE_PATH ?? '/tmp/niu-otp.sqlite')
+const configuredDatabasePath = process.env.DATABASE_PATH ?? 'niu-otp.sqlite'
+const databasePath = process.env.VERCEL === '1' && !configuredDatabasePath.startsWith('/tmp/')
+  ? `/tmp/${configuredDatabasePath.split(/[\\/]/).pop() ?? 'niu-otp.sqlite'}`
+  : configuredDatabasePath
+const db = new Database(databasePath)
 db.pragma('journal_mode = WAL')
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, telegram_id TEXT UNIQUE NOT NULL, username TEXT, balance REAL NOT NULL DEFAULT 0, status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);

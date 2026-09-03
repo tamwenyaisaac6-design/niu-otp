@@ -48,7 +48,7 @@ Deploy this project to Vercel, add `NOWPAYMENTS_IPN_SECRET`, `DATABASE_PATH`, an
 https://your-vercel-project.vercel.app/api/nowpayments
 ```
 
-The endpoint validates `x-nowpayments-sig`, credits only confirmed/finished payments, and ignores duplicate callbacks. SQLite on Vercel is suitable for a prototype only; use a hosted database for production because serverless storage is not durable.
+The endpoint validates `x-nowpayments-sig`, credits only confirmed/finished payments, and ignores duplicate callbacks. Vercel uses temporary `/tmp` SQLite storage for this prototype; use a hosted database before production because serverless storage is not durable.
 
 The bot uses Reply Keyboard web-app buttons for primary navigation. The Mini App sends Telegram `initData` to the backend; the backend validates it with the bot token and never accepts a client-supplied Telegram ID, balance, or price. VirtualSMS credentials are only used by the server. Prices are fetched from the provider and recalculated server-side using `PRICE_MULTIPLIER`.
 
