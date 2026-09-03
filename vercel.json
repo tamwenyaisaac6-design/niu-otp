@@ -1,0 +1,12 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist-miniapp",
+  "functions": {
+    "api/nowpayments.ts": {
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    { "source": "/miniapp", "destination": "/index.html" }
+  ]
+}
