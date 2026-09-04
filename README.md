@@ -1,6 +1,6 @@
 # NI OTP Web App
 
-Standalone NI OTP web app for purchasing temporary verification numbers. Telegram is no longer required for the user interface.
+Standalone NI OTP web app for purchasing temporary verification numbers. Users sign up and log in with email/password; Telegram is not required for the user interface.
 
 ## Setup
 

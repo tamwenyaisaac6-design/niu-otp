@@ -4,6 +4,18 @@
   "functions": {
     "api/nowpayments.ts": {
       "maxDuration": 10
+    },
+    "api/auth.ts": {
+      "maxDuration": 10
+    },
+    "api/catalog.ts": {
+      "maxDuration": 30
+    },
+    "api/purchase.ts": {
+      "maxDuration": 30
+    },
+    "api/deposit.ts": {
+      "maxDuration": 30
     }
   }
 }

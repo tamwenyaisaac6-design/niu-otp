@@ -1,20 +1,8 @@
 import crypto from 'node:crypto'
-import Database from 'better-sqlite3'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { db } from './_db.js'
 
 export const config = { api: { bodyParser: false } }
-
-const configuredDatabasePath = process.env.DATABASE_PATH ?? 'niu-otp.sqlite'
-const databasePath = process.env.VERCEL === '1' && !configuredDatabasePath.startsWith('/tmp/')
-  ? `/tmp/${configuredDatabasePath.split(/[\\/]/).pop() ?? 'niu-otp.sqlite'}`
-  : configuredDatabasePath
-const db = new Database(databasePath)
-db.pragma('journal_mode = WAL')
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, telegram_id TEXT UNIQUE NOT NULL, username TEXT, balance REAL NOT NULL DEFAULT 0, status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
-  CREATE TABLE IF NOT EXISTS payments (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, telegram_id TEXT NOT NULL, nowpayments_payment_id TEXT UNIQUE NOT NULL, requested_amount REAL NOT NULL, pay_currency TEXT, pay_amount REAL, status TEXT NOT NULL, credited INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, confirmed_at TEXT);
-  CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, type TEXT NOT NULL, amount REAL NOT NULL, balance_before REAL NOT NULL, balance_after REAL NOT NULL, reference TEXT, status TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
-`)
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== 'POST') return response.status(405).json({ error: 'Method not allowed' })
