@@ -8,6 +8,9 @@
     "api/auth.ts": {
       "maxDuration": 10
     },
+    "api/account.ts": {
+      "maxDuration": 10
+    },
     "api/catalog.ts": {
       "maxDuration": 30
     },
